@@ -1,0 +1,21 @@
+# This file controls behaviour for the readline library in every application that uses readline
+
+# use vi keybindings
+set editing-mode vi
+set show-mode-in-prompt on
+
+# Display completions with different colors, depending on type. Colors are taken from the LS_COLORS Variable
+set colored-stats on
+
+# perform filename matching in case-insensitive fashion
+set completion-ignore-case on
+
+# show all possible completions immediately
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# there are some functions unbound in vi mode, which might be worth binding to a key
+# dynamic-complete-history
+# individual completions (hostname, directory, file, user)
+# menu-complete instead of regular complete on tab (rotates though possible candidates)
+# yank-pop (replace the last pasted text with the previous one from the kill-ring)
