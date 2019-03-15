@@ -8,6 +8,19 @@ XTerm.vt100.scrollBar: true
 XTerm.termName: xterm-256color
 *customization: -color
 
+
+!!see https://gist.github.com/XVilka/8346728#gistcomment-2321001
+!in recent xterm (v331+) it might be possible to set color values directly with special escape
+!sequences: (see CSI Pm m Character Attributes (SGR) in control sequence manual)
+!CSI 38 ; 2 ; R ; G ; B m
+!CSI 38 ; 2 ; R : G : B m
+!CSI 38 ; 2 : R : G : B m
+!CSI 38 ; 2 : Colorspace : R : G : B m
+!To actually render those values directly, the resource directColor has to be set to true (and
+!support for it has to be compiled in)
+!If not, the values will be mapped to the closest color from the configures 256 colors
+!ubuntu 18 ships with xterm v330, debian 9 ships 327
+
 !!{{{https://github.com/solarized/xresources
 !!Copyright (c) 2011 Ethan Schoonover
 !!MIT license

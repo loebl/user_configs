@@ -73,9 +73,17 @@ shopt -s globstar
 # default editor to use
 export EDITOR=vim
 
+# TODO: add PS1 configuration. Git repo detection would be useful (list current branch?). Git-sh and
+# git-prompt already did something light this.
+# See ctlseqs.txt of xterm for a list of Control Characters
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
+	# control sequence: OSC Ps ; Pt BEL
+	# Ps:
+	# - 0 -> change icon name and window title to Pt
+	# - 1 -> change icon name to Pt
+	# - 2 -> change window title to Pt
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 *)
