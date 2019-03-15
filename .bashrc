@@ -71,7 +71,7 @@ shopt -s cdspell
 shopt -s globstar
 
 # default editor to use
-EDITOR=vim
+export EDITOR=vim
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
