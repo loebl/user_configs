@@ -70,9 +70,6 @@ shopt -s cdspell
 # if directory tree is large)
 shopt -s globstar
 
-# default editor to use
-export EDITOR=vim
-
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
@@ -82,6 +79,7 @@ xterm*|rxvt*)
     ;;
 esac
 
+source /usr/bin/virtualenvwrapper.sh
 # machine specific bash files
 if [ -f ~/.config/bash/local_mods ]; then
   . ~/.config/bash/local_mods
