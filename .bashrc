@@ -70,14 +70,23 @@ shopt -s cdspell
 # if directory tree is large)
 shopt -s globstar
 
+# git stuff
+# based on https://jansblog.org/2011/05/30/bash-prompt-mit-git-informationen/
+function parse_git_branch {
+  [ -d .git ] || return 1
+  git_branch="$(git branch 2> /dev/null)"
+  branch_pattern="^\* (.*)"
+  if [[ ${git_branch} =~ ${branch_pattern} ]]; then
+    echo "[${BASH_REMATCH[1]}]"
+  fi
+}
+function my_prompt {
+  PS1="\u@\h: \w $(parse_git_branch)\n\$ "
+}
+
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+PROMPT_COMMAND=my_prompt
 
 source /usr/bin/virtualenvwrapper.sh
 # machine specific bash files
