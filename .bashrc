@@ -81,7 +81,7 @@ function parse_git_branch {
   fi
 }
 function my_prompt {
-  # used special symbols:
+  # Unicode terminal symbols:
   # - arc down and right: U+256d
   # - arc up and right: U+2570
   # - box horizontal: U+2500
@@ -96,7 +96,6 @@ function my_prompt {
   # - maybe: clock/date \A, \d or \D{date format}
   # - maybe: job count \j
   # - $COLUMNS: number of cols in current terminal
-  # - maybe: use blocks and frame elements starting from 0x2580
   # Colors xterm:
   # - start escape: \e[
   #   direct color: 38;2;0;R;G;B
@@ -113,12 +112,10 @@ function my_prompt {
     git_branch="$left_bar$git_branch$right_bar"
   fi
   local baseline=$(for i in $(seq 22 $COLUMNS); do echo -e -n "\u2500"; done; echo -e -n "\u2574")
-  local date=$(date +"%Y-%m-%d %H:%M:%S")
-  PS1="$baseline$date$right_bar\r$front$last_prog$separator\u@\h$separator\w$right_bar$git_branch\n "
+  PS1="$baseline\D{%Y-%m-%d %H:%M:%S}$right_bar\r"
+  PS1+="$front$last_prog$separator\u@\h$separator\w$right_bar$git_branch\n "
 }
 
-# If this is an xterm set the title to user@host:dir
-# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 PROMPT_COMMAND=my_prompt
 
 source /usr/bin/virtualenvwrapper.sh
