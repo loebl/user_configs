@@ -74,8 +74,8 @@ shopt -s globstar
 # based on https://jansblog.org/2011/05/30/bash-prompt-mit-git-informationen/
 function parse_git_branch {
   [ -d .git ] || return 1
-  git_branch="$(git branch 2> /dev/null)"
-  branch_pattern="^\* (.*)"
+  local git_branch="$(git branch 2> /dev/null)"
+  local branch_pattern="^\* (.*)"
   if [[ ${git_branch} =~ ${branch_pattern} ]]; then
     echo "[${BASH_REMATCH[1]}]"
   fi
@@ -103,17 +103,17 @@ function my_prompt {
   #   (other colors: see control sequence manual "CSI Pm m  Character Attributes (SGR)."
   #   end: m
   #   ex: \e[38;2;255;0;0m
-  last_prog=$?
-  front=$(echo -e "\u256d\u2500\u2574")
-  separator=$(echo -e "\u2576\u2500\u2574")
-  git_branch=$(parse_git_branch)
-  right_bar=$(echo -e -n "\u2576")
-  left_bar=$(echo -e -n "\u2574")
+  local last_prog=$?
+  local front=$(echo -e "\u256d\u2500\u2574")
+  local separator=$(echo -e "\u2576\u2500\u2574")
+  local git_branch=$(parse_git_branch)
+  local right_bar=$(echo -e -n "\u2576")
+  local left_bar=$(echo -e -n "\u2574")
   if [[ -n "$git_branch" ]]; then
     git_branch="$left_bar$git_branch$right_bar"
   fi
-  baseline=$(for i in $(seq 22 $COLUMNS); do echo -e -n "\u2500"; done; echo -e -n "\u2574")
-  date=$(date +"%Y-%m-%d %H:%M:%S")
+  local baseline=$(for i in $(seq 22 $COLUMNS); do echo -e -n "\u2500"; done; echo -e -n "\u2574")
+  local date=$(date +"%Y-%m-%d %H:%M:%S")
   PS1="$baseline$date$right_bar\r$front$last_prog$separator\u@\h$separator\w$right_bar$git_branch\n "
 }
 
