@@ -81,7 +81,36 @@ function parse_git_branch {
   fi
 }
 function my_prompt {
-  PS1="\u@\h: \w $(parse_git_branch)\n\$ "
+  # used special symbols:
+  # - arc down and right: U+256d
+  # - arc up and right: U+2570
+  # - box horizontal: U+2500
+  # - box down and right: U+250c
+  # - box down and left: U+2510
+  # - box left: U+2574
+  # - box right: U+2576
+  # Parts of the prompt:
+  # - username: usually either my name or root \u
+  # - working directory \w
+  # - hostname \h
+  # - maybe: clock/date \A, \d or \D{date format}
+  # - maybe: job count \j
+  # - $COLUMNS: number of cols in current terminal
+  # - maybe: use blocks and frame elements starting from 0x2580
+  # Colors xterm:
+  # - start escape: \e[
+  #   direct color: 38;2;0;R;G;B
+  #   (other colors: see control sequence manual "CSI Pm m  Character Attributes (SGR)."
+  #   end: m
+  #   ex: \e[38;2;255;0;0m
+  last_prog=$?
+  front=$(echo -e "\u256d\u2500\u2574")
+  separator=$(echo -e "\u2576\u2500\u2574")
+  git_branch=$(parse_git_branch)
+  if [[ -n "$git_branch" ]]; then
+    git_branch="$separator$git_branch"
+  fi
+  PS1="$front$last_prog$separator\u@\h$separator\w$git_branch\n "
 }
 
 # If this is an xterm set the title to user@host:dir
