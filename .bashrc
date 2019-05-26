@@ -107,10 +107,14 @@ function my_prompt {
   front=$(echo -e "\u256d\u2500\u2574")
   separator=$(echo -e "\u2576\u2500\u2574")
   git_branch=$(parse_git_branch)
+  right_bar=$(echo -e -n "\u2576")
+  left_bar=$(echo -e -n "\u2574")
   if [[ -n "$git_branch" ]]; then
-    git_branch="$separator$git_branch"
+    git_branch="$left_bar$git_branch$right_bar"
   fi
-  PS1="$front$last_prog$separator\u@\h$separator\w$git_branch\n "
+  baseline=$(for i in $(seq 22 $COLUMNS); do echo -e -n "\u2500"; done; echo -e -n "\u2574")
+  date=$(date +"%Y-%m-%d %H:%M:%S")
+  PS1="$baseline$date$right_bar\r$front$last_prog$separator\u@\h$separator\w$right_bar$git_branch\n "
 }
 
 # If this is an xterm set the title to user@host:dir
