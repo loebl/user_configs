@@ -112,6 +112,7 @@ function my_prompt {
 # If this is an xterm set the title to user@host:dir
 # PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 PROMPT_COMMAND=my_prompt
+PS2=$(echo -e -n "\u25ba ")
 
 source /usr/bin/virtualenvwrapper.sh
 # machine specific bash files
