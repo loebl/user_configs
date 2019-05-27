@@ -66,7 +66,7 @@ shopt -s globstar
 function parse_git_branch {
   [ -d .git ] || return 1
   local git_branch="$(git branch 2> /dev/null)"
-  local branch_pattern="^\* (.*)"
+  local branch_pattern="\* ([^ ]*)"
   if [[ ${git_branch} =~ ${branch_pattern} ]]; then
     echo "[${BASH_REMATCH[1]}]"
   fi
