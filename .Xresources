@@ -1,6 +1,11 @@
-XTerm.vt100.utf8: true
-XTerm.vt100.faceName: Droid Sans Mono
-XTerm.vt100.faceSize: 10
+!!XTerm.vt100.utf8: true
+XTerm.vt100.locale: true
+!!alternative: Source Code Pro or terminus X-Font (or Proggy Square)
+!!XTerm.vt100.faceName: Droid Sans Mono
+XTerm.vt100.faceName: Source Code Pro
+XTerm.vt100.faceSize: 11
+!!terminus sizes: 12,14,16,17,18,20,22,24,28,32
+!!XTerm.vt100.font: -*-terminus-*-*-*-*-12-*-*-*-*-*-iso10646-1
 XTerm.vt100.showBlinkAsBold: true
 XTerm.vt100.scrollTtyOutput: false
 XTerm.vt100.scrollKey: true

@@ -26,11 +26,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.config/dircolors/dircolors.ansi-dark\
@@ -59,10 +54,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# if set, enable vi keybindings instead of emacs. It always starts in insert mode
-# Can also be set for all readline programs in .inputrc
-# set -o vi
-
 # help with butterfingers: correct small typos in directory names supplied to cd
 shopt -s cdspell
 
@@ -70,26 +61,59 @@ shopt -s cdspell
 # if directory tree is large)
 shopt -s globstar
 
-# default editor to use
-export EDITOR=vim
+# git stuff
+# based on https://jansblog.org/2011/05/30/bash-prompt-mit-git-informationen/
+function parse_git_branch {
+  [ -d .git ] || return 1
+  local git_branch="$(git branch 2> /dev/null)"
+  local branch_pattern="^\* (.*)"
+  if [[ ${git_branch} =~ ${branch_pattern} ]]; then
+    echo "[${BASH_REMATCH[1]}]"
+  fi
+}
+function my_prompt {
+  # used special symbols:
+  # - arc down and right: U+256d
+  # - arc up and right: U+2570
+  # - box horizontal: U+2500
+  # - box down and right: U+250c
+  # - box down and left: U+2510
+  # - box left: U+2574
+  # - box right: U+2576
+  # Parts of the prompt:
+  # - username: usually either my name or root \u
+  # - working directory \w
+  # - hostname \h
+  # - maybe: clock/date \A, \d or \D{date format}
+  # - maybe: job count \j
+  # - $COLUMNS: number of cols in current terminal
+  # - maybe: use blocks and frame elements starting from 0x2580
+  # Colors xterm:
+  # - start escape: \e[
+  #   direct color: 38;2;0;R;G;B
+  #   (other colors: see control sequence manual "CSI Pm m  Character Attributes (SGR)."
+  #   end: m
+  #   ex: \e[38;2;255;0;0m
+  local last_prog=$?
+  local front=$(echo -e "\u256d\u2500\u2574")
+  local separator=$(echo -e "\u2576\u2500\u2574")
+  local git_branch=$(parse_git_branch)
+  local right_bar=$(echo -e -n "\u2576")
+  local left_bar=$(echo -e -n "\u2574")
+  if [[ -n "$git_branch" ]]; then
+    git_branch="$left_bar$git_branch$right_bar"
+  fi
+  local baseline=$(for i in $(seq 22 $COLUMNS); do echo -e -n "\u2500"; done; echo -e -n "\u2574")
+  local date=$(date +"%Y-%m-%d %H:%M:%S")
+  PS1="$baseline$date$right_bar\r$front$last_prog$separator\u@\h$separator\w$right_bar$git_branch\n "
+}
 
-# TODO: add PS1 configuration. Git repo detection would be useful (list current branch?). Git-sh and
-# git-prompt already did something light this.
 # See ctlseqs.txt of xterm for a list of Control Characters
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-	# control sequence: OSC Ps ; Pt BEL
-	# Ps:
-	# - 0 -> change icon name and window title to Pt
-	# - 1 -> change icon name to Pt
-	# - 2 -> change window title to Pt
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+PROMPT_COMMAND=my_prompt
 
+source /usr/bin/virtualenvwrapper.sh
 # machine specific bash files
 if [ -f ~/.config/bash/local_mods ]; then
   . ~/.config/bash/local_mods
