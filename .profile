@@ -25,7 +25,7 @@ export EDITOR=vim
 # add pkgconfig for local ssr installation
 export PKG_CONFIG_PATH=/opt/ssr/lib/pkgconfig
 # add Go path
-export PATH=$PATH:/home/loebl/go/bin
+export PATH=$PATH:$HOME/go/bin
 # add path for virtual envs
 export WORKON_HOME=~/.virtualenvs
 # set PATH so it includes user's private bin if it exists
