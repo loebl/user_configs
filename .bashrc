@@ -66,7 +66,7 @@ shopt -s globstar
 function parse_git_branch {
   [ -d .git ] || return 1
   local git_branch="$(git branch 2> /dev/null)"
-  local branch_pattern="\* ([^ ]*)"
+  local branch_pattern="\* ([^[:space:]]*)"
   if [[ ${git_branch} =~ ${branch_pattern} ]]; then
     echo "[${BASH_REMATCH[1]}]"
   fi
@@ -94,6 +94,7 @@ function my_prompt {
   #   (other colors: see control sequence manual "CSI Pm m  Character Attributes (SGR)."
   #   end: m
   #   ex: \e[38;2;255;0;0m
+  # TODO: strategy for very long branch names and working directory paths
   local last_prog=$?
   local front=$(echo -e "\u256d\u2500\u2574")
   local separator=$(echo -e "\u2576\u2500\u2574")
