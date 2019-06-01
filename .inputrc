@@ -3,8 +3,13 @@
 # use vi keybindings
 set editing-mode vi
 set show-mode-in-prompt on
-set vi-cmd-mode-string \xe2\x95\xb0\xe2\x96\xb7
-set vi-ins-mode-string \xe2\x95\xb0\xe2\x96\xb6
+$if Bash
+  set vi-cmd-mode-string \xe2\x95\xb0\xe2\x96\xb7
+  set vi-ins-mode-string \xe2\x95\xb0\xe2\x96\xb6
+$else
+  set vi-cmd-mode-string \xe2\x94\x80\xe2\x96\xb7
+  set vi-ins-mode-string \xe2\x94\x80\xe2\x96\xb6
+$endif
 
 # Display completions with different colors, depending on type. Colors are taken from the LS_COLORS Variable
 set colored-stats on

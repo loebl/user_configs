@@ -26,11 +26,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.config/dircolors/dircolors.ansi-dark\
@@ -59,10 +54,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# if set, enable vi keybindings instead of emacs. It always starts in insert mode
-# Can also be set for all readline programs in .inputrc
-# set -o vi
-
 # help with butterfingers: correct small typos in directory names supplied to cd
 shopt -s cdspell
 
@@ -73,9 +64,8 @@ shopt -s globstar
 # git stuff
 # based on https://jansblog.org/2011/05/30/bash-prompt-mit-git-informationen/
 function parse_git_branch {
-  [ -d .git ] || return 1
-  local git_branch="$(git branch 2> /dev/null)"
-  local branch_pattern="^\* (.*)"
+  local git_branch=$(git branch 2> /dev/null)
+  local branch_pattern="\* ([^[:space:]]*)"
   if [[ ${git_branch} =~ ${branch_pattern} ]]; then
     echo "[${BASH_REMATCH[1]}]"
   fi
@@ -102,6 +92,8 @@ function my_prompt {
   #   (other colors: see control sequence manual "CSI Pm m  Character Attributes (SGR)."
   #   end: m
   #   ex: \e[38;2;255;0;0m
+  # TODO: strategy for very long branch names and working directory paths
+  # See ctlseqs.txt of xterm for a list of Control Characters
   local last_prog=$?
   local front=$(echo -e "\u256d\u2500\u2574")
   local separator=$(echo -e "\u2576\u2500\u2574")
@@ -117,6 +109,7 @@ function my_prompt {
 }
 
 PROMPT_COMMAND=my_prompt
+PS2=$(echo -e -n "\u25ba ")
 
 source /usr/bin/virtualenvwrapper.sh
 # machine specific bash files
