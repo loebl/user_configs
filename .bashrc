@@ -66,7 +66,8 @@ shopt -s globstar
 # based on https://jansblog.org/2011/05/30/bash-prompt-mit-git-informationen/
 function parse_git_branch {
   local git_branch=$(git branch 2> /dev/null)
-  local branch_pattern="\* ([^[:space:]]*|\(HEAD[^)]*\))"
+  # either branch name without spaces, or detached head in braces
+  local branch_pattern="\* ([^[:space:]]*|\([^)]+\))"
   if [[ ${git_branch} =~ ${branch_pattern} ]]; then
     echo "[${BASH_REMATCH[1]}]"
   fi
